@@ -1,0 +1,3 @@
+[submodule "infoviz"]
+	path = infoviz
+	url = https://github.com/CristianFelix/infoviz.git
