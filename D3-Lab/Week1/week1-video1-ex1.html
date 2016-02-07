@@ -1,0 +1,108 @@
+<html>
+    <head>
+        <font></font>
+        <title>Gapminder - Wealth and Health</title>
+        <style type="text/css">
+            .Table {
+                display: table;
+            }
+            .Title {
+                display: table-caption;
+                text-align: center;
+                font-weight: bold;
+                font-size: larger;
+            }
+            .Row {
+                display: table-row;
+                overflow: hidden;
+                word-break: normal;
+                word-wrap: break-word;
+                
+            }
+            .Cell {
+                display: table-cell;
+                padding-left: 5px;
+                padding-right: 5px;
+                overflow: hidden;
+                word-wrap: break-word;
+            }
+            #gap {
+                background-color: black;
+                color: white;
+                font-weight: bold;
+                font-size: 18;
+                
+            }
+            #countries {
+                list-style: none;
+                padding: 0px;
+            }
+            body {
+                font-family: arial;
+            }
+            h2 {
+                font-size: 15
+            }
+            
+            #hints {
+                padding: 15
+            }
+        
+        </style>
+    </head>
+    <body>
+        <h1>Your Turn</h1>
+        <hr>
+        <h2>Update the previous page to allow the user to add new countries to the list
+        </h2>
+        <div class="Row">
+            <div class="Cell" id="gap">
+                <p>Gapiminder - Wealth and Health of Nations</p>
+            </div>
+            <div class="Cell">
+                <p><b>Hints</b></p>
+            </div>
+        </div>
+        <div class="Row">
+            <div class="Cell">
+                <b>Countries</b>
+                <p>Name 
+                <input type="search" id="textInput"> 
+                <button onclick="addCountry()"> Add</button>
+                <hr>
+            </div>
+            <div class="Cell">
+                <ul id="hints">
+                    <li>Use onclick event of the button to call a function</li>
+                    <li>Use <b>id attibute</b> on the input to gets its value</li>
+                    <li>Add a new <b>li</b> to the list with the new value</li>
+                </ul>
+            </div>
+        </div>
+            <ul id="countries">
+                <li>USA</li>
+                <li>Mexico</li>
+                <li>Canada</li>
+            </ul>    
+    </body>
+    <script>
+        
+        var newCountry = "any";
+        
+        function logCountry(newCountry) {
+            var log = document.getElementById("countries");
+            var newEntry = document.createElement("li");
+            newEntry.innerHTML = newCountry;
+            log.appendChild(newEntry);
+        }
+        
+        function addCountry(newCountry) {
+            if(!newCountry) {
+                newCountry = document.getElementById("textInput").value;
+                logCountry(newCountry);
+            }
+        }
+        
+
+    </script> 
+</html>
