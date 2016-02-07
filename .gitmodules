@@ -1,3 +1,6 @@
 [submodule "infoviz"]
 	path = infoviz
 	url = https://github.com/CristianFelix/infoviz.git
+[submodule "D3-Lab/infoviz"]
+	path = D3-Lab/infoviz
+	url = https://github.com/CristianFelix/infoviz.git
