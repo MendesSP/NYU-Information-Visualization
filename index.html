@@ -1,7 +1,102 @@
 <html>
-	<body>
-		<h1>Hello World</h1>
-		<h2>This is a new page</h2>
-	</body>
+    <head>
+        <title>Gapminder Wealth and Health</title>
+        <style type="text/css">
+             #viz {
+                list-style: none;
+                padding: 0px;
+            }
+            .Table {
+                display: table;
+            }
+            .Title {
+                display: table-caption;
+                text-align: center;
+                font-weight: bold;
+                font-size: larger;
+            }
+            .Row {
+                display: table-row;
+                overflow: hidden;
+                word-break: normal;
+                word-wrap: break-word;
+                
+            }
+            .Cell {
+                display: table-cell;
+                padding-left: 5px;
+                padding-right: 5px;
+                overflow: hidden;
+                word-wrap: break-word;
+            }
+            h1 {
+                background-color: black;
+                color: white;
+                font-weight: bold;
+                font-size: 200%;
+            }
+            body {
+                font-family: arial;
+            }
+            h2 {
+                font-size: 15
+            }
+            
+            #hints {
+                padding: 15
+            }
+            .li {
+                list-style: none;
+                padding: 0px;
+                color: black;
+            }
+            .bigger { font-size:150%; }
+        </style>
+    </head>
+    
+    <body>
+         <h1>Gapiminder - Wealth and Health of Nations</h1>
+        <div class="Row">
+            <div class="Cell">
+                <b><span class='bigger'>Countries</span></b>
+                <br/><br/>
+            </div>
+        </div>
+        <div class="Row">
+            <div class="Cell">
+                <ul id="viz">
+                </ul>  
+            </div>
+        </div>         
+    </body>
+    
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+    <script> 
+        var viz = d3.select("#viz");
+        var countries = [];
+        
+        d3.json("https://raw.githubusercontent.com/CristianFelix/infoviz/master/gapminder.json", 
+                function(error, result) {
+                    countries = result;
+                    render();
+                })
+        
+        //make a function to update the screen 
+        function render() {
+            var changes  = viz.selectAll("li")
+                .data(countries, function (d) {return d.name});
+            changes.enter()
+                    .append("li")
+                    .attr("class","viz")
+                    .text(function(d){ return d.name});
+        }
+        
+        function addCountry(){
+            var newCountry = d3.select("#countries").node().value;
+            countries.push(newCountry);
+            render();
+        }
+    </script>
 </html>
 
