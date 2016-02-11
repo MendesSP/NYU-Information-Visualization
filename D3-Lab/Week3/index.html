@@ -1,0 +1,60 @@
+<html>
+    <head></head>
+        <body>
+            <svg  width ="600" height="400">
+               <rect width ="600" height="400" fill="none" stroke="black" stroke-width="1"></rect>
+                <g transform= "translate(0,10)">
+                    <text dx="300"
+                          text-anchor="middle"
+                          style="font-size: 30" 
+                          dy="30">My Title</text>
+                    <path transform="translate(10,0)"
+                          d="M 0 0 L 25 25 L 0 50 0 50"
+                          stroke="none"
+                          fill ="gray"></path>
+                    <path transform="translate(565,0)"
+                          d="M 25 0 L 0 25 L 25 50 L 25 0"
+                          stroke="none"
+                          fill ="gray"></path>
+                    <line stroke="gray"
+                          x1="0" x2="600" y1="60" y2="60"></line>
+                </g>
+                <g id="dotGroup"></g>
+            </svg>
+        </body>
+    
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    
+        <script>
+            
+            var data = [];
+            d3.json("https://raw.githubusercontent.com/CristianFelix/infoviz/master/gapminder.json", 
+                function(error, result) {
+                    data = result;
+                    render(data);
+                })
+            
+            var viz = d3.select("#dotGroup");
+            var width = 600, 
+                height = 400,
+                margin = {top:90, left: 20, right: 20, bottom: 20}, 
+                innerWidth = width - margin.left - margin.right,
+                innerHeight = height - margin.top - margin.bottom;
+            
+            viz.attr("transform",
+                    "translate("+margin.left + "," + margin.top + ")")
+            
+            function render(data){
+                var dataPoints = viz.selectAll("circle").data(data);
+                
+                dataPoints.enter()
+                    .append("circle")
+                    .attr("r",10)
+                    .attr("cx", function(d,i) {return Math.random() * innerWidth})
+                    .attr("cy", function(d,i) {return Math.random() * innerHeight})
+                    .attr("fill", "red")
+                    .attr("opacity", 0.9)
+            }
+        </script>
+        
+</html>

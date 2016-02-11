@@ -1,0 +1,182 @@
+<html>
+    <head>
+        <title>Gapminder Wealth and Health</title>
+        <style type="text/css">
+            
+            #container {
+                float: left;
+            }
+            #left, #right {
+                vertical-align: top;
+                display: inline-block;
+            }
+            #right {
+                margin: 1px 1px 0 1px;
+                padding: 5px;
+                width: 10px;
+            }
+            
+             #countries {
+                list-style: none;
+                padding: 0px;
+            }
+            .Table {
+                display: table;
+            }
+            .Title {
+                display: table-caption;
+                text-align: center;
+                font-weight: bold;
+                font-size: larger;
+            }
+            .Row {
+                display: table-row;
+                overflow: hidden;
+                word-break: normal;
+                word-wrap: break-word;
+                
+            }
+            .Cell {
+                display: table-cell;
+                padding-left: 1px;
+                padding-right: 1px;
+                overflow: hidden;
+                word-wrap: break-word;
+                
+            }
+            h1 {
+                background-color: black;
+                color: white;
+                font-weight: bold;
+                font-size: 200%;
+                padding: 0px
+                
+            }
+            body {
+                font-family: arial;
+            }
+            h2 {
+                font-size: 15
+            }
+            
+            #hints {
+                padding: 15
+            }
+            .li {
+                list-style: none;
+                padding: 0px;
+                color: black;
+            }
+            .bigger { font-size:150%; }
+        </style>
+    </head>
+    
+    <body>
+         <h1 style = "width: 800px"; >Gapiminder - Wealth and Health of Nations</h1>
+        <div class="Row">
+            <div class="Cell">
+                <b><span class='bigger'>Countries</span></b>
+                <br/><br/>
+            </div>
+        </div>
+        
+        <div id="container">
+            <div id="left">
+                <ul id="countries",>
+                </ul>  
+            </div>
+            <div id="right">
+                <svg  width ="600" height="400">
+                    <rect width ="600" height="400" fill="none" stroke="black" stroke-width="0"></rect>
+                    <g id="dotGroup"></g>
+                </svg>
+            </div>
+        </div>
+    </body>
+   
+    
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+    <script> 
+        
+        //Define Variables
+        var viz = d3.select("#countries");
+        var viz2 = d3.select("#dotGroup");
+        var year = 2008;
+        var data = [];
+        var resultFiltered = [];
+        
+        var width = 600, 
+            height = 400,
+            margin = {top:20, left: 20, right: 20, bottom: 20}, 
+            innerWidth = width - margin.left - margin.right,
+            innerHeight = height - margin.top - margin.bottom;
+        
+            viz2.attr("transform",
+                    "translate("+margin.left + "," + margin.top + ")")
+        
+       //Load Data
+            d3.json("https://raw.githubusercontent.com/CristianFelix/infoviz/master/Week%203/newData.json", 
+                function(error, result) {
+                    resultFiltered = result.filter(function(d) { return d.income[year] != undefined})
+                    data = result
+                    render_list(data);
+                    render_points(resultFiltered)
+                })
+        
+        //Update screen with list of countries 
+        function render_list(data) {
+            var changes  = viz.selectAll("li")
+                .data(data, function (d) {return d.name});
+            changes.enter()
+                    .append("li")
+                    .attr("class","countries")
+                    .text(function(d){ return d.name});
+        }
+           
+        //Update screen with points
+        function render_points(data) {
+            
+            //Define scales range
+            var xScale = d3.scale.linear()
+                .range([0,innerWidth]),
+                
+                yScale = d3.scale.linear()
+                .range([innerHeight,0]),
+                
+                sizeScale = d3.scale.linear()
+                .range([5,15]);
+            
+                colorScale = d3.scale.category10()
+            
+            //Define the type of draw and data used    
+            var dataPoints = viz2.selectAll("circle").data(data);
+                
+            //Get scale function using defined ranges
+            xScale.domain(d3.extent(data, function(d) {return d.income[year]}));
+            
+            yScale.domain(d3.extent(data, function(d) {return d.lifeExpectancy[year]}));
+            
+            sizeScale.domain(d3.extent(data, function(d) {return d.population[year]}));
+            
+            colorScale.domain(d3.extent(data, function(d) {return d.region}));
+            
+            //plot points using domains obtained through scales
+            dataPoints.enter()
+                .append("circle")
+                
+                .attr("r", function(d,i) {
+                return sizeScale(d.population[year])})
+                
+                .attr("cx", function(d,i) {return xScale(d.income[year])})
+                
+                .attr("cy", function(d,i) {return yScale(d.lifeExpectancy[year])})
+                
+                .attr("opacity", 0.7)
+                
+                .attr("fill", function(d,i) {return colorScale(d.region)})
+                
+        }
+    </script>
+</html>
+
